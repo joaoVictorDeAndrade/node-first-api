@@ -6,6 +6,9 @@ const routes = require("./routes");
 
 const server = http.createServer((request, response) => {
   const parsedUrl = new URL(`http://localhost:3000${request.url}`);
+  console.log(
+    `Request method: ${request.method} | Endpoint: ${parsedUrl.pathname}`,
+  );
 
   let { pathname } = parsedUrl;
   let id = null;
@@ -28,10 +31,11 @@ const server = http.createServer((request, response) => {
   };
 
   if (route) {
-    request.query = Object.fromEntries(parsedUrl.searchParams);
+    request.query = Object.fromEntries(parsedUrl.searchParams); // Converte um Iterator em um Objeto
     request.params = { id };
 
     if (["POST", "PUT", "PATCH"].includes(request.method)) {
+      console.log("request");
       bodyParser(request, () => route.handler(request, response));
     } else {
       route.handler(request, response);

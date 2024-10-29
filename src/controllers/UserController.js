@@ -28,6 +28,11 @@ module.exports = {
   createUser(request, response) {
     const { body } = request;
 
+    if (!body.name) {
+      response.send(400, { error: "Invalid request" });
+      return;
+    }
+
     const lastUserId = users[users.length - 1].id;
 
     const newUser = {
